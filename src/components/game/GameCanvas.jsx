@@ -24,9 +24,10 @@ function GameCanvas({ children }) {
         dampingFactor={0.05}
         rotateSpeed={0.7}
         zoomSpeed={0.8}
+        makeDefault
         touches={{
-          ONE: 2,  // ROTATE - one finger drag to rotate
-          TWO: 1   // DOLLY (zoom) - two finger pinch to zoom
+          ONE: 0,  // ROTATE - one finger drag to rotate
+          TWO: 2   // DOLLY_PAN - two finger pinch to zoom
         }}
       />
 
