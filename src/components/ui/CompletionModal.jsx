@@ -1,4 +1,7 @@
+import { useGameStore } from '../../stores/gameStore'
+
 function CompletionModal({ onClose, mistakes, timeTaken, rewards }) {
+  const { setPhase } = useGameStore()
   const formatTime = (ms) => {
     const seconds = Math.floor(ms / 1000)
     const minutes = Math.floor(seconds / 60)
@@ -93,12 +96,71 @@ function CompletionModal({ onClose, mistakes, timeTaken, rewards }) {
           </div>
         )}
 
-        <button
-          onClick={onClose}
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded border-2 border-green-400 transition-colors"
-        >
-          Play Again
-        </button>
+        {/* Achievements Section */}
+        {rewards?.newAchievements && rewards.newAchievements.length > 0 && (
+          <div className="bg-gradient-to-br from-amber-900 to-yellow-900 rounded p-6 mb-6 border-2 border-amber-500">
+            <h2 className="text-xl font-bold text-amber-300 text-center mb-4">
+              🏆 Achievements Unlocked! 🏆
+            </h2>
+            <div className="space-y-3">
+              {rewards.newAchievements.map((achievement) => (
+                <div
+                  key={achievement.id}
+                  className="bg-amber-800 bg-opacity-50 rounded p-3 border border-amber-400"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="text-3xl">{achievement.icon}</div>
+                    <div className="flex-1">
+                      <div className="font-bold text-amber-200">{achievement.name}</div>
+                      <div className="text-sm text-amber-100">{achievement.description}</div>
+                      {achievement.reward && (
+                        <div className="flex gap-2 mt-1 text-xs">
+                          {achievement.reward.coins && (
+                            <span className="text-yellow-300">💰 +{achievement.reward.coins}</span>
+                          )}
+                          {achievement.reward.diamonds && (
+                            <span className="text-cyan-300">💎 +{achievement.reward.diamonds}</span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="space-y-3">
+          <button
+            onClick={() => setPhase('modelSelect')}
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded border-2 border-emerald-400 transition-colors"
+          >
+            ▶ Next Model
+          </button>
+
+          <button
+            onClick={onClose}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded border-2 border-blue-400 transition-colors"
+          >
+            🔄 Play Again
+          </button>
+
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={() => setPhase('shop')}
+              className="bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-4 rounded border-2 border-amber-400 transition-colors"
+            >
+              🛒 Shop
+            </button>
+            <button
+              onClick={() => setPhase('menu')}
+              className="bg-stone-700 hover:bg-stone-600 text-white font-bold py-2 px-4 rounded border-2 border-stone-500 transition-colors"
+            >
+              ≡ Menu
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

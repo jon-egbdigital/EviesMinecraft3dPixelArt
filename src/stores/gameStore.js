@@ -1,6 +1,9 @@
 import { create } from 'zustand'
 
 export const useGameStore = create((set, get) => ({
+  // UI Phase - menu, modelSelect, playing, shop, settings
+  phase: 'menu',
+
   // Current model data
   currentModel: null,
 
@@ -32,6 +35,8 @@ export const useGameStore = create((set, get) => ({
   startTime: null,
 
   // Actions
+  setPhase: (phase) => set({ phase }),
+
   setCurrentModel: (model) => set({
     currentModel: model,
     paintedBlocks: {},

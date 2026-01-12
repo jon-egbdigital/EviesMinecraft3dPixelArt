@@ -40,19 +40,92 @@ function PaintableBlock({ position, colorId, number, isPainted, paintedColor, on
         />
       </mesh>
 
-      {/* Number label - only show if not painted */}
+      {/* Number labels on all 6 sides - only show if not painted */}
       {!isPainted && (
-        <Text
-          position={[0, 0, 0.5]}
-          fontSize={0.4}
-          color="#ffffff"
-          anchorX="center"
-          anchorY="middle"
-          outlineWidth={0.02}
-          outlineColor="#000000"
-        >
-          {number}
-        </Text>
+        <>
+          {/* Front face */}
+          <Text
+            position={[0, 0, 0.5]}
+            fontSize={0.4}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
+          >
+            {number}
+          </Text>
+
+          {/* Back face */}
+          <Text
+            position={[0, 0, -0.5]}
+            rotation={[0, Math.PI, 0]}
+            fontSize={0.4}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
+          >
+            {number}
+          </Text>
+
+          {/* Right face */}
+          <Text
+            position={[0.5, 0, 0]}
+            rotation={[0, Math.PI / 2, 0]}
+            fontSize={0.4}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
+          >
+            {number}
+          </Text>
+
+          {/* Left face */}
+          <Text
+            position={[-0.5, 0, 0]}
+            rotation={[0, -Math.PI / 2, 0]}
+            fontSize={0.4}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
+          >
+            {number}
+          </Text>
+
+          {/* Top face */}
+          <Text
+            position={[0, 0.5, 0]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            fontSize={0.4}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
+          >
+            {number}
+          </Text>
+
+          {/* Bottom face */}
+          <Text
+            position={[0, -0.5, 0]}
+            rotation={[Math.PI / 2, 0, 0]}
+            fontSize={0.4}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            outlineWidth={0.02}
+            outlineColor="#000000"
+          >
+            {number}
+          </Text>
+        </>
       )}
     </group>
   )

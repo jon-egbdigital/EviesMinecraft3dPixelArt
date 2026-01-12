@@ -115,6 +115,16 @@ Use for version control and collaboration:
 
 Version control is especially important for a father-daughter project to track progress and celebrate milestones.
 
+### Vercel MCP
+Use for deployment and hosting:
+- Deploy the application to Vercel for production hosting
+- Manage deployments and preview URLs
+- Configure environment variables
+- Monitor build logs and deployment status
+- Set up custom domains
+
+Vercel provides fast, reliable hosting for React applications with automatic deployments from Git.
+
 ## Architecture
 
 ### Data Layer

@@ -6,14 +6,19 @@ import CompletionModal from './components/ui/CompletionModal'
 import HUD from './components/ui/HUD'
 import Shop from './components/ui/Shop'
 import BrushSelector from './components/ui/BrushSelector'
+import MainMenu from './components/ui/MainMenu'
+import ModelSelect from './components/ui/ModelSelect'
+import Settings from './components/ui/Settings'
+import { Achievements } from './components/ui/Achievements'
 import { useGameStore } from './stores/gameStore'
 import { useRewards } from './hooks/useRewards'
 import { usePainting } from './hooks/usePainting'
-import swordModel from './data/models/sword.json'
+import { preloadSounds, playMusic } from './utils/soundManager'
 import './utils/devHelpers' // Load dev helpers in development mode
 
 function App() {
   const {
+    phase,
     currentModel,
     paintedBlocks,
     selectedColorId,
@@ -22,7 +27,6 @@ function App() {
     startTime,
     xRayMode,
     hintBlock,
-    setCurrentModel,
     setSelectedColor,
     paintBlock,
     resetGame
@@ -31,12 +35,20 @@ function App() {
   const { grantRewards } = useRewards()
   const { handlePaint } = usePainting()
   const [currentRewards, setCurrentRewards] = useState(null)
-  const [shopOpen, setShopOpen] = useState(false)
 
-  // Load the sword model on mount
+  // Preload sounds on mount
   useEffect(() => {
-    setCurrentModel(swordModel)
-  }, [setCurrentModel])
+    preloadSounds()
+  }, [])
+
+  // Play appropriate music based on phase
+  useEffect(() => {
+    if (phase === 'playing') {
+      playMusic('game_music')
+    } else {
+      playMusic('menu_music')
+    }
+  }, [phase])
 
   // Get unique color IDs used in the model
   const modelColors = useMemo(() => {
@@ -91,79 +103,107 @@ function App() {
     }
   }, [isComplete, currentModel, mistakes, startTime, grantRewards, currentRewards])
 
-  if (!currentModel) {
+  // Render different phases
+  if (phase === 'menu') {
+    return <MainMenu />
+  }
+
+  if (phase === 'modelSelect') {
+    return <ModelSelect />
+  }
+
+  if (phase === 'shop') {
+    return <Shop isOpen={true} onClose={() => {}} fullScreen={true} />
+  }
+
+  if (phase === 'settings') {
+    return <Settings />
+  }
+
+  if (phase === 'achievements') {
+    return <Achievements />
+  }
+
+  // Playing phase
+  if (phase === 'playing') {
+    if (!currentModel) {
+      return (
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="text-white text-2xl">Loading...</div>
+        </div>
+      )
+    }
+
+    const timeTaken = isComplete && startTime ? Date.now() - startTime : 0
+
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="text-white text-2xl">Loading...</div>
+      <div className="w-full h-full relative">
+        {/* Title */}
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
+          <h1 className="text-white text-2xl font-bold bg-gray-800 bg-opacity-90 px-6 py-3 rounded-lg border-2 border-gray-600">
+            {currentModel.name}
+          </h1>
+        </div>
+
+        {/* Menu button */}
+        <button
+          onClick={() => {
+            if (window.confirm('Return to main menu? Current painting session will be lost.\n(Your coins, diamonds, and completed models are saved!)')) {
+              useGameStore.getState().setPhase('menu')
+            }
+          }}
+          className="absolute top-4 left-4 z-10 bg-gray-800 bg-opacity-90 hover:bg-gray-700 px-4 py-2 rounded-lg border-2 border-gray-600 transition-colors"
+        >
+          <span className="text-white font-bold text-lg">≡ Menu</span>
+        </button>
+
+        {/* Mistakes counter */}
+        <div className="absolute top-20 left-4 z-10 bg-gray-800 bg-opacity-90 px-4 py-2 rounded-lg border-2 border-gray-600">
+          <span className="text-white font-bold">Mistakes: </span>
+          <span className={`font-bold ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
+            {mistakes}
+          </span>
+        </div>
+
+        {/* HUD - Currency and Level */}
+        <HUD />
+
+        {/* 3D Canvas */}
+        <GameCanvas>
+          <VoxelModel
+            modelData={currentModel}
+            paintedBlocks={paintedBlocks}
+            onBlockClick={handleBlockClick}
+            xRayMode={xRayMode}
+            hintBlock={hintBlock}
+          />
+        </GameCanvas>
+
+        {/* Color Palette */}
+        <ColorPalette
+          selectedColorId={selectedColorId}
+          onColorSelect={handleColorSelect}
+          modelColors={modelColors}
+        />
+
+        {/* Brush Selector */}
+        <BrushSelector />
+
+        {/* Completion Modal */}
+        {isComplete && (
+          <CompletionModal
+            onClose={handlePlayAgain}
+            mistakes={mistakes}
+            timeTaken={timeTaken}
+            rewards={currentRewards}
+          />
+        )}
       </div>
     )
   }
 
-  const timeTaken = isComplete && startTime ? Date.now() - startTime : 0
-
-  return (
-    <div className="w-full h-full relative">
-      {/* Title */}
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
-        <h1 className="text-white text-2xl font-bold bg-gray-800 bg-opacity-90 px-6 py-3 rounded-lg border-2 border-gray-600">
-          {currentModel.name}
-        </h1>
-      </div>
-
-      {/* HUD - Currency and Level */}
-      <HUD />
-
-      {/* Shop Button */}
-      <button
-        onClick={() => setShopOpen(true)}
-        className="absolute top-4 left-4 z-10 bg-green-700 hover:bg-green-600 text-white font-bold px-4 py-2 rounded-lg border-2 border-green-500"
-      >
-        🛒 SHOP
-      </button>
-
-      {/* Mistakes counter */}
-      <div className="absolute top-20 left-4 z-10 bg-gray-800 bg-opacity-90 px-4 py-2 rounded-lg border-2 border-gray-600">
-        <span className="text-white font-bold">Mistakes: </span>
-        <span className={`font-bold ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
-          {mistakes}
-        </span>
-      </div>
-
-      {/* 3D Canvas */}
-      <GameCanvas>
-        <VoxelModel
-          modelData={currentModel}
-          paintedBlocks={paintedBlocks}
-          onBlockClick={handleBlockClick}
-          xRayMode={xRayMode}
-          hintBlock={hintBlock}
-        />
-      </GameCanvas>
-
-      {/* Color Palette */}
-      <ColorPalette
-        selectedColorId={selectedColorId}
-        onColorSelect={handleColorSelect}
-        modelColors={modelColors}
-      />
-
-      {/* Brush Selector */}
-      <BrushSelector />
-
-      {/* Shop Modal */}
-      <Shop isOpen={shopOpen} onClose={() => setShopOpen(false)} />
-
-      {/* Completion Modal */}
-      {isComplete && (
-        <CompletionModal
-          onClose={handlePlayAgain}
-          mistakes={mistakes}
-          timeTaken={timeTaken}
-          rewards={currentRewards}
-        />
-      )}
-    </div>
-  )
+  // Default fallback
+  return <MainMenu />
 }
 
 export default App

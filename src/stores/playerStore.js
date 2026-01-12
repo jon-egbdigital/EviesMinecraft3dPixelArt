@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { checkNewAchievements, getAchievementById } from '../data/achievements'
 
 export const usePlayerStore = create(
   persist(
@@ -15,6 +16,7 @@ export const usePlayerStore = create(
       // Unlocks
       unlockedBrushes: ['basic'],
       unlockedModels: ['sword'],
+      unlockedPacks: ['starter'],
       completedModels: [],
 
       // Consumable items
@@ -23,14 +25,40 @@ export const usePlayerStore = create(
 
       // Settings
       settings: {
-        musicVolume: 0.5,
+        musicVolume: 0.25,  // Reduced from 0.5 to 0.25 (50% quieter)
         sfxVolume: 0.8,
       },
 
-      // Actions
-      addCoins: (amount) => set((state) => ({ coins: state.coins + amount })),
+      // Achievements
+      unlockedAchievements: [],
 
-      addDiamonds: (amount) => set((state) => ({ diamonds: state.diamonds + amount })),
+      // Achievement tracking stats
+      totalCompletions: 0,
+      perfectCompletions: 0,
+      speedBonusCount: 0,
+      totalCoinsEarned: 0,
+      totalDiamondsEarned: 0,
+      currentPerfectStreak: 0,
+      bestPerfectStreak: 0,
+      jackpotsWon: 0,
+      completedPacks: [],
+      halfParCompletions: 0,
+      perfect_easy: 0,
+      perfect_medium: 0,
+      perfect_hard: 0,
+      allModelsComplete: false,
+      allPacksUnlocked: false,
+
+      // Actions
+      addCoins: (amount) => set((state) => ({
+        coins: state.coins + amount,
+        totalCoinsEarned: state.totalCoinsEarned + amount
+      })),
+
+      addDiamonds: (amount) => set((state) => ({
+        diamonds: state.diamonds + amount,
+        totalDiamondsEarned: state.totalDiamondsEarned + amount
+      })),
 
       spendCoins: (amount) => {
         const state = get()
@@ -76,6 +104,26 @@ export const usePlayerStore = create(
         return { unlockedModels: [...state.unlockedModels, modelId] }
       }),
 
+      unlockPack: (packId, cost) => {
+        const state = get()
+
+        // Check if already unlocked
+        if (state.unlockedPacks.includes(packId)) return false
+
+        // Deduct cost
+        if (cost) {
+          if (cost.type === 'coins') {
+            if (!state.spendCoins(cost.amount)) return false
+          } else if (cost.type === 'diamonds') {
+            if (!state.spendDiamonds(cost.amount)) return false
+          }
+        }
+
+        // Unlock the pack
+        set({ unlockedPacks: [...state.unlockedPacks, packId] })
+        return true
+      },
+
       addUndos: (count) => set((state) => ({
         undoCount: state.undoCount + count
       })),
@@ -113,6 +161,128 @@ export const usePlayerStore = create(
         settings: { ...state.settings, ...newSettings }
       })),
 
+      // Achievement actions
+      unlockAchievement: (achievementId) => {
+        const state = get()
+        if (state.unlockedAchievements.includes(achievementId)) {
+          return null
+        }
+
+        // Get achievement and award rewards
+        const achievement = getAchievementById(achievementId)
+        if (!achievement) return null
+
+        // Add to unlocked list
+        set({
+          unlockedAchievements: [...state.unlockedAchievements, achievementId]
+        })
+
+        // Award rewards
+        if (achievement.reward) {
+          if (achievement.reward.coins) {
+            get().addCoins(achievement.reward.coins)
+          }
+          if (achievement.reward.diamonds) {
+            get().addDiamonds(achievement.reward.diamonds)
+          }
+        }
+
+        return achievement
+      },
+
+      trackCompletion: (completionData) => {
+        const state = get()
+        const {
+          modelId,
+          difficulty,
+          mistakes,
+          hasSpeedBonus,
+          isJackpot,
+          completionTime,
+          parTime
+        } = completionData
+
+        const isPerfect = mistakes === 0
+        const isHalfPar = completionTime <= parTime / 2
+
+        // Update basic stats
+        set({
+          totalCompletions: state.totalCompletions + 1,
+          perfectCompletions: isPerfect ? state.perfectCompletions + 1 : state.perfectCompletions,
+          speedBonusCount: hasSpeedBonus ? state.speedBonusCount + 1 : state.speedBonusCount,
+          jackpotsWon: isJackpot ? state.jackpotsWon + 1 : state.jackpotsWon,
+          halfParCompletions: isHalfPar ? state.halfParCompletions + 1 : state.halfParCompletions
+        })
+
+        // Update perfect streak
+        if (isPerfect) {
+          const newStreak = state.currentPerfectStreak + 1
+          set({
+            currentPerfectStreak: newStreak,
+            bestPerfectStreak: Math.max(newStreak, state.bestPerfectStreak)
+          })
+        } else {
+          set({ currentPerfectStreak: 0 })
+        }
+
+        // Track perfect by difficulty
+        if (isPerfect && difficulty) {
+          const key = `perfect_${difficulty}`
+          set({ [key]: (state[key] || 0) + 1 })
+        }
+
+        // Check for new achievements
+        return get().checkAchievements()
+      },
+
+      checkAchievements: () => {
+        const state = get()
+
+        // Get player stats for achievement checking
+        const playerStats = {
+          totalCompletions: state.totalCompletions,
+          perfectCompletions: state.perfectCompletions,
+          speedBonusCount: state.speedBonusCount,
+          totalCoinsEarned: state.totalCoinsEarned,
+          totalDiamondsEarned: state.totalDiamondsEarned,
+          currentPerfectStreak: state.currentPerfectStreak,
+          bestPerfectStreak: state.bestPerfectStreak,
+          jackpotsWon: state.jackpotsWon,
+          halfParCompletions: state.halfParCompletions,
+          completedPacks: state.completedPacks,
+          level: state.level,
+          coins: state.coins,
+          diamonds: state.diamonds,
+          unlockedBrushes: state.unlockedBrushes,
+          unlockedPacks: state.unlockedPacks,
+          allModelsComplete: state.allModelsComplete,
+          allPacksUnlocked: state.allPacksUnlocked,
+          perfect_easy: state.perfect_easy,
+          perfect_medium: state.perfect_medium,
+          perfect_hard: state.perfect_hard
+        }
+
+        const newAchievements = checkNewAchievements(playerStats, state.unlockedAchievements)
+
+        // Unlock each new achievement
+        const unlockedDetails = []
+        for (const achievementId of newAchievements) {
+          const achievement = get().unlockAchievement(achievementId)
+          if (achievement) {
+            unlockedDetails.push(achievement)
+          }
+        }
+
+        return unlockedDetails
+      },
+
+      markPackCompleted: (packId) => set((state) => {
+        if (!state.completedPacks.includes(packId)) {
+          return { completedPacks: [...state.completedPacks, packId] }
+        }
+        return state
+      }),
+
       // Reset (for testing)
       resetPlayer: () => set({
         coins: 0,
@@ -121,9 +291,26 @@ export const usePlayerStore = create(
         level: 1,
         unlockedBrushes: ['basic'],
         unlockedModels: ['sword'],
+        unlockedPacks: ['starter'],
         completedModels: [],
         undoCount: 0,
         hintCount: 0,
+        unlockedAchievements: [],
+        totalCompletions: 0,
+        perfectCompletions: 0,
+        speedBonusCount: 0,
+        totalCoinsEarned: 0,
+        totalDiamondsEarned: 0,
+        currentPerfectStreak: 0,
+        bestPerfectStreak: 0,
+        jackpotsWon: 0,
+        completedPacks: [],
+        halfParCompletions: 0,
+        perfect_easy: 0,
+        perfect_medium: 0,
+        perfect_hard: 0,
+        allModelsComplete: false,
+        allPacksUnlocked: false,
       }),
     }),
     {

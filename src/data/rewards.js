@@ -74,7 +74,7 @@ export function calculateXP(difficulty, isPerfect = false) {
 /**
  * Calculate coin multiplier based on conditions
  */
-export function calculateCoinMultiplier(isPerfect, difficulty) {
+export function calculateCoinMultiplier(isPerfect, difficulty, hasSpeedBonus = false) {
   let multiplier = 1
 
   if (isPerfect) {
@@ -83,6 +83,10 @@ export function calculateCoinMultiplier(isPerfect, difficulty) {
 
   if (difficulty === 'hard') {
     multiplier *= 2
+  }
+
+  if (hasSpeedBonus) {
+    multiplier *= 1.25
   }
 
   return multiplier
@@ -95,8 +99,15 @@ export function calculateRewards(modelData, mistakes, timeTaken) {
   const isPerfect = mistakes === 0
   const difficulty = modelData.difficulty || 'easy'
 
-  // Calculate XP
-  const xp = calculateXP(difficulty, isPerfect)
+  // Check for speed bonus (completed under par time)
+  const parTime = modelData.parTime || 999999
+  const hasSpeedBonus = timeTaken < parTime
+
+  // Calculate XP (add 25% bonus for speed)
+  let xp = calculateXP(difficulty, isPerfect)
+  if (hasSpeedBonus) {
+    xp = Math.floor(xp * 1.25)
+  }
 
   // Roll for random loot
   const lootItem = COMPLETION_LOOT_TABLE
@@ -112,7 +123,7 @@ export function calculateRewards(modelData, mistakes, timeTaken) {
   const loot = lootItem.getReward()
 
   // Apply multipliers to coins
-  const coinMultiplier = calculateCoinMultiplier(isPerfect, difficulty)
+  const coinMultiplier = calculateCoinMultiplier(isPerfect, difficulty, hasSpeedBonus)
 
   if (loot.type === 'coins') {
     loot.amount = Math.floor(loot.amount * coinMultiplier)
@@ -135,6 +146,8 @@ export function calculateRewards(modelData, mistakes, timeTaken) {
     isPerfect,
     difficulty,
     coinMultiplier,
-    timeTaken
+    timeTaken,
+    parTime,
+    hasSpeedBonus
   }
 }

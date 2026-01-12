@@ -1,4 +1,5 @@
 import { useGameStore } from '../stores/gameStore'
+import { playSound } from '../utils/soundManager'
 
 export function usePainting() {
   const { currentModel, paintedBlocks, paintBlock, paintBlocks, activeBrush } = useGameStore()
@@ -12,28 +13,66 @@ export function usePainting() {
 
     if (!clickedBlock) return false
 
+    let result = false
+
     // Apply brush effect based on active brush type
     switch (activeBrush) {
       case 'basic':
-        return paintBlock(clickedPosition, selectedColorId)
+        result = paintBlock(clickedPosition, selectedColorId)
+        if (result) {
+          playSound('paint_correct')
+        } else {
+          playSound('paint_wrong')
+        }
+        return result
 
       case 'multi-fill':
-        return applyMultiFill(clickedBlock, selectedColorId)
+        result = applyMultiFill(clickedBlock, selectedColorId)
+        if (result && result.success) {
+          playSound('paint_multifill')
+        } else {
+          playSound('paint_wrong')
+        }
+        return result
 
       case 'area':
-        return applyAreaBrush(clickedPosition, selectedColorId)
+        result = applyAreaBrush(clickedPosition, selectedColorId)
+        if (result && result.success) {
+          playSound('paint_correct')
+        } else {
+          playSound('paint_wrong')
+        }
+        return result
 
       case 'x-ray':
         // X-ray is just a visual mode, still paint single blocks
-        return paintBlock(clickedPosition, selectedColorId)
+        result = paintBlock(clickedPosition, selectedColorId)
+        if (result) {
+          playSound('paint_correct')
+        } else {
+          playSound('paint_wrong')
+        }
+        return result
 
       case 'golden':
       case 'rainbow':
         // Cosmetic brushes work like basic but with visual effects
-        return paintBlock(clickedPosition, selectedColorId)
+        result = paintBlock(clickedPosition, selectedColorId)
+        if (result) {
+          playSound('paint_correct')
+        } else {
+          playSound('paint_wrong')
+        }
+        return result
 
       default:
-        return paintBlock(clickedPosition, selectedColorId)
+        result = paintBlock(clickedPosition, selectedColorId)
+        if (result) {
+          playSound('paint_correct')
+        } else {
+          playSound('paint_wrong')
+        }
+        return result
     }
   }
 

@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { usePlayerStore } from '../../stores/playerStore'
+import { useGameStore } from '../../stores/gameStore'
 import { BRUSHES, UTILITIES, canAfford, canUnlock } from '../../data/shop-items'
+import { playSound } from '../../utils/soundManager'
 
-export default function Shop({ isOpen, onClose }) {
+export default function Shop({ isOpen, onClose, fullScreen = false }) {
+  const { setPhase } = useGameStore()
   const {
     coins,
     diamonds,
@@ -59,6 +62,9 @@ export default function Shop({ isOpen, onClose }) {
       return
     }
 
+    // Play purchase sound
+    playSound('purchase')
+
     // Grant the item
     if (item.consumable) {
       // Utility items
@@ -70,6 +76,7 @@ export default function Shop({ isOpen, onClose }) {
     } else {
       // Brushes
       unlockBrush(item.id)
+      setTimeout(() => playSound('unlock'), 200)
     }
 
     setConfirmPurchase(null)
@@ -168,6 +175,14 @@ export default function Shop({ isOpen, onClose }) {
     )
   }
 
+  const handleClose = () => {
+    if (fullScreen) {
+      setPhase('menu')
+    } else {
+      onClose()
+    }
+  }
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
       <div className="bg-gray-900 border-4 border-gray-700 rounded-lg p-5 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -175,10 +190,10 @@ export default function Shop({ isOpen, onClose }) {
         <div className="flex justify-between items-center mb-5">
           <h2 className="text-3xl font-bold text-white pl-1">SHOP</h2>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="text-white text-2xl hover:text-red-400 font-bold pr-1"
           >
-            ✕
+            {fullScreen ? '← BACK' : '✕'}
           </button>
         </div>
 
