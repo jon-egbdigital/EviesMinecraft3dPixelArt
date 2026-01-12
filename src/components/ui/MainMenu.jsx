@@ -69,7 +69,7 @@ export default function MainMenu() {
 
         {/* Footer */}
         <div className="mt-12 text-stone-500 text-sm">
-          <p>A father-daughter project</p>
+          <p>An EE Mush Bowles & Dad Project</p>
           <p>Built with React & Three.js</p>
         </div>
       </div>
