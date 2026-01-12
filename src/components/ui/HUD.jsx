@@ -7,7 +7,7 @@ function HUD() {
   const { currentLevel, progressPercent, currentXP, nextLevelXP, isMaxLevel } = useProgress()
 
   return (
-    <div className="absolute top-4 right-4 z-10 space-y-2">
+    <div className="absolute top-20 left-4 z-10 space-y-2">
       {/* Currency Display */}
       <div className="bg-gray-800 bg-opacity-90 px-4 py-2 rounded border-2 border-gray-600 flex items-center gap-4">
         <div className="flex items-center gap-2">
