@@ -137,7 +137,7 @@ function App() {
     const timeTaken = isComplete && startTime ? Date.now() - startTime : 0
 
     return (
-      <div className="w-full h-full relative">
+      <div className="w-full h-full relative overflow-hidden">
         {/* Title */}
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
           <h1 className="text-white text-2xl font-bold bg-gray-800 bg-opacity-90 px-6 py-3 rounded-lg border-2 border-gray-600">

@@ -5,7 +5,10 @@ function GameCanvas({ children }) {
   return (
     <Canvas
       camera={{ position: [8, 8, 8], fov: 50 }}
-      style={{ background: '#1a1a1a' }}
+      style={{
+        background: '#1a1a1a',
+        touchAction: 'none' // Allow OrbitControls to handle all touch events
+      }}
     >
       {/* Lighting */}
       <ambientLight intensity={0.6} />
