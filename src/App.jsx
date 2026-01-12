@@ -163,8 +163,8 @@ function App() {
         {/* UI Overlay - pointer events only on interactive elements */}
         <div className="absolute inset-0 pointer-events-none z-10">
           {/* Title */}
-          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 pointer-events-auto">
-            <h1 className="text-white text-2xl font-bold bg-gray-800 bg-opacity-90 px-6 py-3 rounded-lg border-2 border-gray-600">
+          <div className="absolute top-2 sm:top-4 left-1/2 transform -translate-x-1/2 pointer-events-auto">
+            <h1 className="text-white text-base sm:text-xl md:text-2xl font-bold bg-gray-800 bg-opacity-90 px-3 py-1.5 sm:px-5 sm:py-2 md:px-6 md:py-3 rounded-lg border-2 border-gray-600">
               {currentModel.name}
             </h1>
           </div>
@@ -176,15 +176,15 @@ function App() {
                 useGameStore.getState().setPhase('menu')
               }
             }}
-            className="absolute top-4 left-4 bg-gray-800 bg-opacity-90 hover:bg-gray-700 px-4 py-2 rounded-lg border-2 border-gray-600 transition-colors pointer-events-auto"
+            className="absolute top-2 sm:top-4 left-2 sm:left-4 bg-gray-800 bg-opacity-90 hover:bg-gray-700 px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg border-2 border-gray-600 transition-colors pointer-events-auto"
           >
-            <span className="text-white font-bold text-lg">≡ Menu</span>
+            <span className="text-white font-bold text-sm sm:text-base md:text-lg">≡ Menu</span>
           </button>
 
           {/* Mistakes counter */}
-          <div className="absolute top-20 left-4 bg-gray-800 bg-opacity-90 px-4 py-2 rounded-lg border-2 border-gray-600 pointer-events-auto">
-            <span className="text-white font-bold">Mistakes: </span>
-            <span className={`font-bold ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
+          <div className="absolute top-12 sm:top-16 md:top-20 left-2 sm:left-4 bg-gray-800 bg-opacity-90 px-2 py-1.5 sm:px-4 sm:py-2 rounded-lg border-2 border-gray-600 pointer-events-auto">
+            <span className="text-white font-bold text-xs sm:text-sm md:text-base">Mistakes: </span>
+            <span className={`font-bold text-xs sm:text-sm md:text-base ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
               {mistakes}
             </span>
           </div>
