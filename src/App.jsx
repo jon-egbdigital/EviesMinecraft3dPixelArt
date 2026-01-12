@@ -138,39 +138,7 @@ function App() {
 
     return (
       <div className="w-full h-full relative overflow-hidden">
-        {/* UI Overlay - pointer events only on interactive elements */}
-        <div className="absolute inset-0 pointer-events-none z-10">
-        {/* Title */}
-        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 pointer-events-auto">
-          <h1 className="text-white text-2xl font-bold bg-gray-800 bg-opacity-90 px-6 py-3 rounded-lg border-2 border-gray-600">
-            {currentModel.name}
-          </h1>
-        </div>
-
-        {/* Menu button */}
-        <button
-          onClick={() => {
-            if (window.confirm('Return to main menu? Current painting session will be lost.\n(Your coins, diamonds, and completed models are saved!)')) {
-              useGameStore.getState().setPhase('menu')
-            }
-          }}
-          className="absolute top-4 left-4 bg-gray-800 bg-opacity-90 hover:bg-gray-700 px-4 py-2 rounded-lg border-2 border-gray-600 transition-colors pointer-events-auto"
-        >
-          <span className="text-white font-bold text-lg">≡ Menu</span>
-        </button>
-
-        {/* Mistakes counter */}
-        <div className="absolute top-20 left-4 bg-gray-800 bg-opacity-90 px-4 py-2 rounded-lg border-2 border-gray-600 pointer-events-auto">
-          <span className="text-white font-bold">Mistakes: </span>
-          <span className={`font-bold ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
-            {mistakes}
-          </span>
-        </div>
-
-        {/* HUD - Currency and Level */}
-        <HUD />
-
-        {/* 3D Canvas */}
+        {/* 3D Canvas - behind everything, receives touch events */}
         <GameCanvas>
           <VoxelModel
             modelData={currentModel}
@@ -181,25 +149,57 @@ function App() {
           />
         </GameCanvas>
 
-        {/* Color Palette */}
-        <ColorPalette
-          selectedColorId={selectedColorId}
-          onColorSelect={handleColorSelect}
-          modelColors={modelColors}
-        />
+        {/* UI Overlay - pointer events only on interactive elements */}
+        <div className="absolute inset-0 pointer-events-none z-10">
+          {/* Title */}
+          <div className="absolute top-4 left-1/2 transform -translate-x-1/2 pointer-events-auto">
+            <h1 className="text-white text-2xl font-bold bg-gray-800 bg-opacity-90 px-6 py-3 rounded-lg border-2 border-gray-600">
+              {currentModel.name}
+            </h1>
+          </div>
 
-        {/* Brush Selector */}
-        <BrushSelector />
+          {/* Menu button */}
+          <button
+            onClick={() => {
+              if (window.confirm('Return to main menu? Current painting session will be lost.\n(Your coins, diamonds, and completed models are saved!)')) {
+                useGameStore.getState().setPhase('menu')
+              }
+            }}
+            className="absolute top-4 left-4 bg-gray-800 bg-opacity-90 hover:bg-gray-700 px-4 py-2 rounded-lg border-2 border-gray-600 transition-colors pointer-events-auto"
+          >
+            <span className="text-white font-bold text-lg">≡ Menu</span>
+          </button>
 
-        {/* Completion Modal */}
-        {isComplete && (
-          <CompletionModal
-            onClose={handlePlayAgain}
-            mistakes={mistakes}
-            timeTaken={timeTaken}
-            rewards={currentRewards}
+          {/* Mistakes counter */}
+          <div className="absolute top-20 left-4 bg-gray-800 bg-opacity-90 px-4 py-2 rounded-lg border-2 border-gray-600 pointer-events-auto">
+            <span className="text-white font-bold">Mistakes: </span>
+            <span className={`font-bold ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {mistakes}
+            </span>
+          </div>
+
+          {/* HUD - Currency and Level */}
+          <HUD />
+
+          {/* Color Palette */}
+          <ColorPalette
+            selectedColorId={selectedColorId}
+            onColorSelect={handleColorSelect}
+            modelColors={modelColors}
           />
-        )}
+
+          {/* Brush Selector */}
+          <BrushSelector />
+
+          {/* Completion Modal */}
+          {isComplete && (
+            <CompletionModal
+              onClose={handlePlayAgain}
+              mistakes={mistakes}
+              timeTaken={timeTaken}
+              rewards={currentRewards}
+            />
+          )}
         </div>
       </div>
     )

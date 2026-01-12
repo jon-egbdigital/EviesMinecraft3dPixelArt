@@ -1,6 +1,6 @@
 {
-  "name": "Minecraft 3D Pixel Art",
-  "short_name": "MC Pixel Art",
+  "name": "Mush's Art Game",
+  "short_name": "Mush's Art",
   "description": "A 3D voxel-based color-by-number game with Minecraft theming",
   "start_url": "/",
   "display": "standalone",
