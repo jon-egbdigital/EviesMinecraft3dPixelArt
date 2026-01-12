@@ -64,7 +64,7 @@ export default function ModelSelect() {
   }
 
   return (
-    <div className="min-h-screen bg-stone-800 text-white p-8">
+    <div className="min-h-screen h-screen overflow-y-auto bg-stone-800 text-white p-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Select a Model</h1>

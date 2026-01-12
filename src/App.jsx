@@ -41,6 +41,17 @@ function App() {
     preloadSounds()
   }, [])
 
+  // Lock scrolling during gameplay phase
+  useEffect(() => {
+    if (phase === 'playing') {
+      document.body.classList.add('game-playing')
+    } else {
+      document.body.classList.remove('game-playing')
+    }
+
+    return () => document.body.classList.remove('game-playing')
+  }, [phase])
+
   // Play appropriate music based on phase
   useEffect(() => {
     if (phase === 'playing') {

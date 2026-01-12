@@ -73,7 +73,7 @@ export function Achievements() {
   const progress = Math.round((unlockedCount / totalAchievements) * 100)
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-800 to-stone-900 text-white p-6">
+    <div className="min-h-screen h-screen overflow-y-auto bg-gradient-to-b from-stone-800 to-stone-900 text-white p-6">
       {/* Header */}
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">

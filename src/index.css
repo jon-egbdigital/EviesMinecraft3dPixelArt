@@ -7,9 +7,6 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  position: fixed;
-  overscroll-behavior: none;
 }
 
 body {
@@ -18,9 +15,17 @@ body {
   color: #ffffff;
 }
 
+/* Lock scrolling only during gameplay */
+body.game-playing {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+}
+
 #root {
   width: 100%;
   height: 100%;
-  overflow: hidden;
   position: relative;
 }
