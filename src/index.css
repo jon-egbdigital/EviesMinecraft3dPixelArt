@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@source "../src";
+@source "./";
 
 html, body {
   margin: 0;
