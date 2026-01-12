@@ -1,0 +1,18 @@
+{
+  "name": "Minecraft 3D Pixel Art",
+  "short_name": "MC Pixel Art",
+  "description": "A 3D voxel-based color-by-number game with Minecraft theming",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#8b4513",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/Mush.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

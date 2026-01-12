@@ -9,7 +9,7 @@ function ColorPalette({ selectedColorId, onColorSelect, modelColors }) {
   return (
     <>
       {/* Desktop: Vertical palette on right */}
-      <div className="hidden md:block absolute top-16 right-4 bg-gray-800 bg-opacity-90 rounded-lg p-3 border-2 border-gray-600">
+      <div className="hidden md:block absolute top-16 right-4 bg-gray-800 bg-opacity-90 rounded-lg p-3 border-2 border-gray-600 pointer-events-auto">
         <div className="text-white text-sm font-bold mb-2 text-center">COLORS</div>
         <div className="flex flex-col gap-2">
           {availableColors.map(color => (
@@ -32,7 +32,7 @@ function ColorPalette({ selectedColorId, onColorSelect, modelColors }) {
       </div>
 
       {/* Mobile: Horizontal palette at bottom */}
-      <div className="md:hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 bg-opacity-95 rounded-lg p-2 border-2 border-gray-600 max-w-full overflow-x-auto">
+      <div className="md:hidden absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 bg-opacity-95 rounded-lg p-2 border-2 border-gray-600 max-w-full overflow-x-auto pointer-events-auto">
         <div className="flex gap-2 px-1">
           {availableColors.map(color => (
             <button

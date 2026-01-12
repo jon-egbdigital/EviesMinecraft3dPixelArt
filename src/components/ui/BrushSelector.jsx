@@ -46,7 +46,7 @@ export default function BrushSelector() {
   return (
     <>
       {/* Desktop: Full bottom bar */}
-      <div className="hidden md:flex absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10 bg-gray-800 bg-opacity-95 px-5 py-3 rounded-lg border-2 border-gray-600">
+      <div className="hidden md:flex absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 bg-opacity-95 px-5 py-3 rounded-lg border-2 border-gray-600 pointer-events-auto">
         <div className="flex items-center gap-5">
           {/* Active Brush Display */}
           <div className="flex items-center gap-2 pr-3 border-r-2 border-gray-600">
@@ -121,7 +121,7 @@ export default function BrushSelector() {
       </div>
 
       {/* Mobile: Compact top bar */}
-      <div className="md:hidden absolute top-16 left-2 right-2 z-10 bg-gray-800 bg-opacity-95 px-3 py-2 rounded-lg border-2 border-gray-600">
+      <div className="md:hidden absolute top-16 left-2 right-2 bg-gray-800 bg-opacity-95 px-3 py-2 rounded-lg border-2 border-gray-600 pointer-events-auto">
         <div className="flex items-center justify-between gap-2 text-xs">
           {/* Active Brush */}
           <div className="flex items-center gap-1 min-w-0">
