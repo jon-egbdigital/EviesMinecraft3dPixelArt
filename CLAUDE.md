@@ -85,7 +85,7 @@ npm run build
 
 ## Production Deployment
 
-**Live URL:** https://evies-minecraft-3d-pixel-9s20m6vld-jonegbdigital-projects.vercel.app
+**Live URL:** https://evies-minecraft-3d-pixel-art.vercel.app
 
 This project is deployed to Vercel with automatic deployments enabled via GitHub integration.
 
