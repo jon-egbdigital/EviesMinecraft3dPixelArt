@@ -9,19 +9,19 @@ function HUD() {
   return (
     <div className="absolute top-36 left-4 z-10 space-y-3">
       {/* Currency Display */}
-      <div className="bg-gray-800 bg-opacity-90 px-8 py-4 rounded-lg border-2 border-gray-600 flex items-center gap-6">
-        <div className="flex items-center gap-3">
+      <div className="bg-gray-800 bg-opacity-90 px-4 py-2 rounded-lg border-2 border-gray-600 flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <span className="text-2xl">💰</span>
           <span className="text-yellow-400 font-bold text-lg">{coins}</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <span className="text-2xl">💎</span>
           <span className="text-cyan-400 font-bold text-lg">{diamonds}</span>
         </div>
       </div>
 
       {/* Level and XP Display */}
-      <div className="bg-gray-800 bg-opacity-90 px-8 py-5 rounded-lg border-2 border-gray-600">
+      <div className="bg-gray-800 bg-opacity-90 px-4 py-3 rounded-lg border-2 border-gray-600">
         <div className="flex items-center justify-between mb-2">
           <span className="text-purple-400 font-bold text-lg">⭐ Level {currentLevel}</span>
           {!isMaxLevel && (
