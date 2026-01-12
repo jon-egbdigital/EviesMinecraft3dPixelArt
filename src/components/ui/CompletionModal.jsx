@@ -1,0 +1,107 @@
+function CompletionModal({ onClose, mistakes, timeTaken, rewards }) {
+  const formatTime = (ms) => {
+    const seconds = Math.floor(ms / 1000)
+    const minutes = Math.floor(seconds / 60)
+    const remainingSeconds = seconds % 60
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`
+  }
+
+  const renderRewardDisplay = () => {
+    if (!rewards || !rewards.loot) return null
+
+    const { loot } = rewards
+
+    if (loot.type === 'coins') {
+      return (
+        <div className="text-2xl font-bold text-yellow-400">
+          💰 {loot.amount} Coins
+        </div>
+      )
+    } else if (loot.type === 'diamonds') {
+      return (
+        <div className="text-2xl font-bold text-cyan-400">
+          💎 {loot.amount} Diamond{loot.amount > 1 ? 's' : ''}
+        </div>
+      )
+    } else if (loot.type === 'jackpot') {
+      return (
+        <div className="space-y-2">
+          <div className="text-2xl font-bold text-yellow-400">
+            💰 {loot.coins} Coins
+          </div>
+          <div className="text-2xl font-bold text-cyan-400">
+            💎 {loot.diamonds} Diamonds
+          </div>
+        </div>
+      )
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+      <div className="bg-gray-800 border-4 border-yellow-500 rounded-lg p-8 max-w-md w-full mx-4">
+        <h1 className="text-4xl font-bold text-yellow-400 text-center mb-6">
+          🎉 YOU WIN! 🎉
+        </h1>
+
+        <div className="bg-gray-700 rounded p-4 mb-6 space-y-3">
+          <div className="flex justify-between text-white text-lg">
+            <span>Time:</span>
+            <span className="font-bold">{formatTime(timeTaken)}</span>
+          </div>
+          <div className="flex justify-between text-white text-lg">
+            <span>Mistakes:</span>
+            <span className={`font-bold ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {mistakes}
+            </span>
+          </div>
+          {mistakes === 0 && (
+            <div className="text-green-400 text-center font-bold mt-2">
+              ⭐ PERFECT! No mistakes! ⭐
+            </div>
+          )}
+        </div>
+
+        {/* Rewards Section */}
+        {rewards && (
+          <div className="bg-gray-900 rounded p-6 mb-6 border-2 border-yellow-600">
+            <h2 className="text-xl font-bold text-yellow-300 text-center mb-4">
+              {rewards.loot.message}
+            </h2>
+
+            <div className="text-center mb-4">
+              {renderRewardDisplay()}
+            </div>
+
+            <div className="text-center space-y-2">
+              <div className="text-lg text-purple-400 font-bold">
+                ⭐ +{rewards.xp} XP
+              </div>
+              {rewards.levelUpResult?.leveledUp && (
+                <div className="text-xl text-green-400 font-bold animate-pulse">
+                  🎊 LEVEL UP! Level {rewards.levelUpResult.newLevel}! 🎊
+                </div>
+              )}
+              {rewards.coinMultiplier > 1 && (
+                <div className="text-sm text-yellow-300">
+                  {rewards.isPerfect && '✨ Perfect Bonus! '}
+                  {rewards.difficulty === 'hard' && '💪 Hard Mode Bonus! '}
+                  ({rewards.coinMultiplier}x multiplier)
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        <button
+          onClick={onClose}
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded border-2 border-green-400 transition-colors"
+        >
+          Play Again
+        </button>
+      </div>
+    </div>
+  )
+}
+
+export default CompletionModal
