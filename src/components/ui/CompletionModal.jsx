@@ -41,7 +41,7 @@ function CompletionModal({ onClose, mistakes, timeTaken, rewards }) {
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50 pointer-events-auto">
       <div className="bg-gray-800 border-4 border-yellow-500 rounded-lg p-8 max-w-md w-full mx-4">
         <h1 className="text-4xl font-bold text-yellow-400 text-center mb-6">
           🎉 YOU WIN! 🎉
