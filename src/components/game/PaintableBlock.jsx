@@ -2,12 +2,16 @@ import { useState, useRef } from 'react'
 import { Text } from '@react-three/drei'
 import { UNPAINTED_COLOR, ERROR_COLOR } from '../../data/colors'
 
-function PaintableBlock({ position, colorId, number, isPainted, paintedColor, onClick }) {
+function PaintableBlock({ position, colorId, number, isPainted, paintedColor, onClick, xRayMode = false, isHint = false }) {
   const [isError, setIsError] = useState(false)
   const meshRef = useRef()
 
   // Determine block color
   const blockColor = isPainted ? paintedColor : UNPAINTED_COLOR
+
+  // X-Ray mode: make painted blocks semi-transparent
+  const opacity = xRayMode && isPainted ? 0.3 : 1.0
+  const transparent = xRayMode && isPainted
 
   const handleClick = (e) => {
     e.stopPropagation()
@@ -29,6 +33,10 @@ function PaintableBlock({ position, colorId, number, isPainted, paintedColor, on
           color={isError ? ERROR_COLOR : blockColor}
           metalness={0.1}
           roughness={0.8}
+          opacity={opacity}
+          transparent={transparent}
+          emissive={isHint ? '#ffaa00' : '#000000'}
+          emissiveIntensity={isHint ? 0.5 : 0}
         />
       </mesh>
 

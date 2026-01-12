@@ -4,8 +4,11 @@ import VoxelModel from './components/game/VoxelModel'
 import ColorPalette from './components/ui/ColorPalette'
 import CompletionModal from './components/ui/CompletionModal'
 import HUD from './components/ui/HUD'
+import Shop from './components/ui/Shop'
+import BrushSelector from './components/ui/BrushSelector'
 import { useGameStore } from './stores/gameStore'
 import { useRewards } from './hooks/useRewards'
+import { usePainting } from './hooks/usePainting'
 import swordModel from './data/models/sword.json'
 import './utils/devHelpers' // Load dev helpers in development mode
 
@@ -17,6 +20,8 @@ function App() {
     isComplete,
     mistakes,
     startTime,
+    xRayMode,
+    hintBlock,
     setCurrentModel,
     setSelectedColor,
     paintBlock,
@@ -24,7 +29,9 @@ function App() {
   } = useGameStore()
 
   const { grantRewards } = useRewards()
+  const { handlePaint } = usePainting()
   const [currentRewards, setCurrentRewards] = useState(null)
+  const [shopOpen, setShopOpen] = useState(false)
 
   // Load the sword model on mount
   useEffect(() => {
@@ -62,7 +69,7 @@ function App() {
 
   const handleBlockClick = (position, colorId) => {
     if (!selectedColorId || isComplete) return false
-    return paintBlock(position, selectedColorId)
+    return handlePaint(position, selectedColorId)
   }
 
   const handleColorSelect = (colorId) => {
@@ -106,8 +113,16 @@ function App() {
       {/* HUD - Currency and Level */}
       <HUD />
 
+      {/* Shop Button */}
+      <button
+        onClick={() => setShopOpen(true)}
+        className="absolute top-4 left-4 z-10 bg-green-700 hover:bg-green-600 text-white font-bold px-4 py-2 rounded border-2 border-green-500"
+      >
+        🛒 SHOP
+      </button>
+
       {/* Mistakes counter */}
-      <div className="absolute top-4 left-4 z-10 bg-gray-800 bg-opacity-90 px-4 py-2 rounded border-2 border-gray-600">
+      <div className="absolute top-20 left-4 z-10 bg-gray-800 bg-opacity-90 px-4 py-2 rounded border-2 border-gray-600">
         <span className="text-white font-bold">Mistakes: </span>
         <span className={`font-bold ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
           {mistakes}
@@ -120,6 +135,8 @@ function App() {
           modelData={currentModel}
           paintedBlocks={paintedBlocks}
           onBlockClick={handleBlockClick}
+          xRayMode={xRayMode}
+          hintBlock={hintBlock}
         />
       </GameCanvas>
 
@@ -129,6 +146,12 @@ function App() {
         onColorSelect={handleColorSelect}
         modelColors={modelColors}
       />
+
+      {/* Brush Selector */}
+      <BrushSelector />
+
+      {/* Shop Modal */}
+      <Shop isOpen={shopOpen} onClose={() => setShopOpen(false)} />
 
       {/* Completion Modal */}
       {isComplete && (

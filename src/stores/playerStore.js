@@ -17,6 +17,10 @@ export const usePlayerStore = create(
       unlockedModels: ['sword'],
       completedModels: [],
 
+      // Consumable items
+      undoCount: 0,
+      hintCount: 0,
+
       // Settings
       settings: {
         musicVolume: 0.5,
@@ -62,13 +66,41 @@ export const usePlayerStore = create(
         return { leveledUp: false }
       },
 
-      unlockBrush: (brushId) => set((state) => ({
-        unlockedBrushes: [...state.unlockedBrushes, brushId]
+      unlockBrush: (brushId) => set((state) => {
+        if (state.unlockedBrushes.includes(brushId)) return state
+        return { unlockedBrushes: [...state.unlockedBrushes, brushId] }
+      }),
+
+      unlockModel: (modelId) => set((state) => {
+        if (state.unlockedModels.includes(modelId)) return state
+        return { unlockedModels: [...state.unlockedModels, modelId] }
+      }),
+
+      addUndos: (count) => set((state) => ({
+        undoCount: state.undoCount + count
       })),
 
-      unlockModel: (modelId) => set((state) => ({
-        unlockedModels: [...state.unlockedModels, modelId]
+      useUndo: () => {
+        const state = get()
+        if (state.undoCount > 0) {
+          set({ undoCount: state.undoCount - 1 })
+          return true
+        }
+        return false
+      },
+
+      addHints: (count) => set((state) => ({
+        hintCount: state.hintCount + count
       })),
+
+      useHint: () => {
+        const state = get()
+        if (state.hintCount > 0) {
+          set({ hintCount: state.hintCount - 1 })
+          return true
+        }
+        return false
+      },
 
       markModelCompleted: (modelId) => set((state) => {
         if (!state.completedModels.includes(modelId)) {
@@ -90,6 +122,8 @@ export const usePlayerStore = create(
         unlockedBrushes: ['basic'],
         unlockedModels: ['sword'],
         completedModels: [],
+        undoCount: 0,
+        hintCount: 0,
       }),
     }),
     {
