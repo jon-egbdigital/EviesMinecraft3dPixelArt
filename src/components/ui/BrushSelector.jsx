@@ -120,22 +120,16 @@ export default function BrushSelector() {
         </div>
       </div>
 
-      {/* Mobile: Compact top bar - moved below title */}
-      <div className="md:hidden absolute top-10 sm:top-12 left-2 right-2 bg-gray-800 bg-opacity-95 px-2 py-1.5 rounded-lg border-2 border-gray-600 pointer-events-auto">
-        <div className="flex items-center justify-between gap-1.5 text-xs">
-          {/* Active Brush - shortened for mobile */}
-          <div className="flex items-center gap-1 min-w-0">
-            <span className="text-white font-bold text-sm">🖌️</span>
-            <span className="text-yellow-400 font-bold text-xs truncate max-w-[60px]">B.</span>
-          </div>
-
-          {/* Utilities Row */}
-          <div className="flex gap-1 flex-shrink-0">
-            {/* Brush Selector - Dropdown on mobile */}
+      {/* Mobile: Ultra-compact top bar */}
+      <div className="md:hidden absolute top-7 left-1 right-1 bg-gray-800 bg-opacity-95 px-1 py-0.5 rounded border border-gray-600 pointer-events-auto">
+        <div className="flex items-center justify-between gap-1 text-xs">
+          {/* Brush icon + dropdown */}
+          <div className="flex items-center gap-0.5">
+            <span className="text-xs">🖌️</span>
             <select
               value={activeBrush}
               onChange={(e) => handleBrushSelect(e.target.value)}
-              className="px-1.5 py-1 rounded bg-gray-700 text-white border border-gray-600 text-xs font-bold"
+              className="px-1 py-0.5 rounded bg-gray-700 text-white border border-gray-600 text-xs font-bold"
             >
               {availableBrushes.map(brush => (
                 <option key={brush.id} value={brush.id}>
@@ -143,38 +137,41 @@ export default function BrushSelector() {
                 </option>
               ))}
             </select>
+          </div>
 
+          {/* Utilities */}
+          <div className="flex gap-0.5 flex-shrink-0">
             {/* Undo */}
             <button
               onClick={handleUndo}
               disabled={undoCount === 0}
-              className={`px-1.5 py-1 rounded text-xs font-bold active:scale-90 ${
+              className={`px-1 py-0.5 rounded text-xs font-bold active:scale-90 ${
                 undoCount > 0
                   ? 'bg-purple-600 text-white'
                   : 'bg-gray-700 text-gray-500'
               }`}
             >
-              ↩️ {undoCount}
+              ↩️{undoCount}
             </button>
 
             {/* Hint */}
             <button
               onClick={handleHint}
               disabled={hintCount === 0}
-              className={`px-1.5 py-1 rounded text-xs font-bold active:scale-90 ${
+              className={`px-1 py-0.5 rounded text-xs font-bold active:scale-90 ${
                 hintCount > 0
                   ? 'bg-orange-600 text-white'
                   : 'bg-gray-700 text-gray-500'
               }`}
             >
-              💡 {hintCount}
+              💡{hintCount}
             </button>
 
             {/* X-Ray */}
             {unlockedBrushes.includes('x-ray') && (
               <button
                 onClick={toggleXRayMode}
-                className={`px-1.5 py-1 rounded text-xs font-bold active:scale-90 ${
+                className={`px-1 py-0.5 rounded text-xs font-bold active:scale-90 ${
                   xRayMode
                     ? 'bg-green-600 text-white'
                     : 'bg-gray-700 text-gray-300'

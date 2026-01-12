@@ -31,21 +31,21 @@ function ColorPalette({ selectedColorId, onColorSelect, modelColors }) {
         </div>
       </div>
 
-      {/* Mobile: Horizontal palette at bottom */}
-      <div className="md:hidden absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 bg-opacity-95 rounded-lg p-1.5 sm:p-2 border-2 border-gray-600 max-w-full overflow-x-auto pointer-events-auto">
-        <div className="flex gap-1.5 sm:gap-2 px-1">
+      {/* Mobile: Compact horizontal palette at bottom */}
+      <div className="md:hidden absolute bottom-1 sm:bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 bg-opacity-95 rounded p-1 sm:p-2 border sm:border-2 border-gray-600 max-w-full overflow-x-auto pointer-events-auto">
+        <div className="flex gap-1 sm:gap-2 px-0.5">
           {availableColors.map(color => (
             <button
               key={color.id}
               onClick={() => onColorSelect(color.id)}
-              className={`w-12 h-12 sm:w-14 sm:h-14 flex-shrink-0 rounded border-3 sm:border-4 transition-all relative active:scale-90 ${
+              className={`w-10 h-10 sm:w-14 sm:h-14 flex-shrink-0 rounded border-2 sm:border-4 transition-all relative active:scale-90 ${
                 selectedColorId === color.id
                   ? 'border-yellow-400 shadow-lg shadow-yellow-400/50'
                   : 'border-gray-500'
               }`}
               style={{ backgroundColor: color.hex }}
             >
-              <span className="absolute inset-0 flex items-center justify-center text-white text-lg sm:text-xl font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
+              <span className="absolute inset-0 flex items-center justify-center text-white text-base sm:text-xl font-bold drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
                 {color.number}
               </span>
             </button>
