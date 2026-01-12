@@ -73,43 +73,43 @@ export function Achievements() {
   const progress = Math.round((unlockedCount / totalAchievements) * 100)
 
   return (
-    <div className="min-h-screen h-screen overflow-y-auto bg-gradient-to-b from-stone-800 to-stone-900 text-white p-6">
+    <div className="min-h-screen h-screen overflow-y-auto bg-gradient-to-b from-stone-800 to-stone-900 text-white p-4 sm:p-6">
       {/* Header */}
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-4xl font-bold text-amber-400">Achievements</h1>
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-amber-400">Achievements</h1>
           <button
             onClick={() => setPhase('menu')}
-            className="px-6 py-3 bg-stone-700 hover:bg-stone-600 rounded-lg text-lg font-semibold transition-colors"
+            className="px-3 py-2 sm:px-6 sm:py-3 bg-stone-700 hover:bg-stone-600 rounded-lg text-sm sm:text-base md:text-lg font-semibold transition-colors"
           >
             Back to Menu
           </button>
         </div>
 
         {/* Progress Summary */}
-        <div className="bg-stone-700 rounded-lg p-6 mb-6 border-2 border-amber-600">
+        <div className="bg-stone-700 rounded-lg p-4 sm:p-6 mb-4 sm:mb-6 border-2 border-amber-600">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xl font-semibold">Overall Progress</span>
-            <span className="text-2xl font-bold text-amber-400">
+            <span className="text-base sm:text-lg md:text-xl font-semibold">Overall Progress</span>
+            <span className="text-xl sm:text-2xl font-bold text-amber-400">
               {unlockedCount} / {totalAchievements}
             </span>
           </div>
-          <div className="w-full bg-stone-800 rounded-full h-4 overflow-hidden border border-stone-600">
+          <div className="w-full bg-stone-800 rounded-full h-3 sm:h-4 overflow-hidden border border-stone-600">
             <div
               className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <div className="text-right mt-2 text-amber-300 font-semibold">
+          <div className="text-right mt-2 text-amber-300 font-semibold text-sm sm:text-base">
             {progress}% Complete
           </div>
         </div>
 
         {/* Category Filter */}
-        <div className="flex gap-2 mb-6 flex-wrap">
+        <div className="flex gap-2 mb-4 sm:mb-6 flex-wrap">
           <button
             onClick={() => setSelectedCategory('all')}
-            className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-semibold transition-colors text-sm sm:text-base ${
               selectedCategory === 'all'
                 ? 'bg-amber-600 text-white'
                 : 'bg-stone-700 hover:bg-stone-600 text-stone-300'
@@ -121,7 +121,7 @@ export function Achievements() {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-lg font-semibold transition-colors capitalize ${
+              className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-semibold transition-colors capitalize text-sm sm:text-base ${
                 selectedCategory === category
                   ? 'bg-amber-600 text-white'
                   : 'bg-stone-700 hover:bg-stone-600 text-stone-300'
@@ -160,16 +160,16 @@ export function Achievements() {
 function AchievementCard({ achievement, unlocked, progress, maxProgress, progressPercent }) {
   return (
     <div
-      className={`rounded-lg p-4 border-2 transition-all ${
+      className={`rounded-lg p-3 sm:p-4 border-2 transition-all ${
         unlocked
           ? 'bg-gradient-to-br from-amber-900 to-yellow-900 border-amber-500'
           : 'bg-stone-800 border-stone-600 opacity-60'
       }`}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-2 sm:gap-3">
         {/* Icon */}
         <div
-          className={`text-4xl ${
+          className={`text-3xl sm:text-4xl ${
             unlocked ? 'grayscale-0' : 'grayscale opacity-50'
           }`}
         >
@@ -180,15 +180,15 @@ function AchievementCard({ achievement, unlocked, progress, maxProgress, progres
         <div className="flex-1">
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h3 className={`font-bold text-lg ${unlocked ? 'text-amber-300' : 'text-stone-400'}`}>
+              <h3 className={`font-bold text-base sm:text-lg ${unlocked ? 'text-amber-300' : 'text-stone-400'}`}>
                 {achievement.name}
               </h3>
-              <p className={`text-sm ${unlocked ? 'text-amber-100' : 'text-stone-500'}`}>
+              <p className={`text-xs sm:text-sm ${unlocked ? 'text-amber-100' : 'text-stone-500'}`}>
                 {achievement.description}
               </p>
             </div>
             {unlocked && (
-              <div className="text-2xl">✓</div>
+              <div className="text-xl sm:text-2xl">✓</div>
             )}
           </div>
 

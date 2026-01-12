@@ -184,37 +184,37 @@ export default function Shop({ isOpen, onClose, fullScreen = false }) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
-      <div className="bg-gray-900 border-4 border-gray-700 rounded-lg p-5 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+      <div className="bg-gray-900 border-2 sm:border-4 border-gray-700 rounded-lg p-4 sm:p-5 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex justify-between items-center mb-5">
-          <h2 className="text-3xl font-bold text-white pl-1">SHOP</h2>
+        <div className="flex justify-between items-center mb-4 sm:mb-5">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white pl-1">SHOP</h2>
           <button
             onClick={handleClose}
-            className="text-white text-2xl hover:text-red-400 font-bold pr-1"
+            className="text-white text-xl sm:text-2xl hover:text-red-400 font-bold pr-1"
           >
             {fullScreen ? '← BACK' : '✕'}
           </button>
         </div>
 
         {/* Currency Display */}
-        <div className="flex gap-3 mb-5">
-          <div className="bg-gray-800 px-4 py-2 rounded-lg border-2 border-yellow-600">
+        <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-5 text-sm sm:text-base">
+          <div className="bg-gray-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border-2 border-yellow-600">
             <span className="text-yellow-400 font-bold">💰 {coins}</span>
           </div>
-          <div className="bg-gray-800 px-4 py-2 rounded-lg border-2 border-cyan-600">
+          <div className="bg-gray-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border-2 border-cyan-600">
             <span className="text-cyan-400 font-bold">💎 {diamonds}</span>
           </div>
-          <div className="bg-gray-800 px-4 py-2 rounded-lg border-2 border-gray-600">
+          <div className="bg-gray-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border-2 border-gray-600">
             <span className="text-white font-bold">Level {level}</span>
           </div>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 mb-5">
+        <div className="flex gap-2 mb-4 sm:mb-5">
           <button
             onClick={() => setActiveTab('brushes')}
-            className={`px-5 py-2 rounded-lg font-bold ${
+            className={`px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg font-bold text-sm sm:text-base ${
               activeTab === 'brushes'
                 ? 'bg-blue-600 text-white'
                 : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
@@ -224,7 +224,7 @@ export default function Shop({ isOpen, onClose, fullScreen = false }) {
           </button>
           <button
             onClick={() => setActiveTab('utilities')}
-            className={`px-5 py-2 rounded-lg font-bold ${
+            className={`px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg font-bold text-sm sm:text-base ${
               activeTab === 'utilities'
                 ? 'bg-blue-600 text-white'
                 : 'bg-gray-700 text-gray-400 hover:bg-gray-600'
@@ -236,11 +236,11 @@ export default function Shop({ isOpen, onClose, fullScreen = false }) {
 
         {/* Utility Inventory Display */}
         {activeTab === 'utilities' && (
-          <div className="mb-4 flex gap-3">
-            <div className="bg-gray-800 px-4 py-2 rounded-lg border-2 border-purple-600">
+          <div className="mb-4 flex flex-wrap gap-2 sm:gap-3 text-sm sm:text-base">
+            <div className="bg-gray-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border-2 border-purple-600">
               <span className="text-purple-400 font-bold">↩️ Undos: {undoCount}</span>
             </div>
-            <div className="bg-gray-800 px-4 py-2 rounded-lg border-2 border-orange-600">
+            <div className="bg-gray-800 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg border-2 border-orange-600">
               <span className="text-orange-400 font-bold">💡 Hints: {hintCount}</span>
             </div>
           </div>
@@ -254,10 +254,10 @@ export default function Shop({ isOpen, onClose, fullScreen = false }) {
 
         {/* Confirmation Modal */}
         {confirmPurchase && (
-          <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-            <div className="bg-gray-800 border-4 border-yellow-600 rounded-lg p-5 max-w-md">
-              <h3 className="text-xl font-bold text-white mb-4 pl-1">Confirm Purchase</h3>
-              <p className="text-gray-300 mb-4 px-1">
+          <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+            <div className="bg-gray-800 border-2 sm:border-4 border-yellow-600 rounded-lg p-4 sm:p-5 max-w-md w-full">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-3 sm:mb-4 pl-1">Confirm Purchase</h3>
+              <p className="text-gray-300 mb-3 sm:mb-4 px-1 text-sm sm:text-base">
                 Buy <span className="font-bold text-white">{confirmPurchase.name}</span> for{' '}
                 {confirmPurchase.cost.type === 'coins' && (
                   <span className="text-yellow-400 font-bold">💰 {confirmPurchase.cost.amount}</span>
@@ -267,16 +267,16 @@ export default function Shop({ isOpen, onClose, fullScreen = false }) {
                 )}
                 ?
               </p>
-              <div className="flex gap-3">
+              <div className="flex gap-2 sm:gap-3">
                 <button
                   onClick={confirmBuy}
-                  className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
+                  className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-3 sm:px-4 rounded-lg text-sm sm:text-base"
                 >
                   YES
                 </button>
                 <button
                   onClick={cancelPurchase}
-                  className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-3 sm:px-4 rounded-lg text-sm sm:text-base"
                 >
                   NO
                 </button>
