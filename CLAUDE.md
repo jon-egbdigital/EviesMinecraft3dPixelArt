@@ -83,21 +83,56 @@ npm run dev
 npm run build
 ```
 
+## Production Deployment
+
+**Live URL:** https://evies-minecraft-3d-pixel-9s20m6vld-jonegbdigital-projects.vercel.app
+
+This project is deployed to Vercel with automatic deployments enabled via GitHub integration.
+
+### Deployment Workflow
+
+All deployments happen automatically through GitHub:
+
+1. Make changes to the codebase locally
+2. Commit changes: `git commit -m "Your commit message"`
+3. Push to GitHub: `git push origin main`
+4. Vercel automatically detects the push and deploys
+
+**IMPORTANT:** Do NOT deploy from localhost. All production deployments must go through GitHub to maintain proper version control and deployment history.
+
+### Vercel Project Configuration
+
+- **Project Name:** evies-minecraft-3d-pixel-art
+- **Framework:** Vite (auto-detected)
+- **Production Branch:** main
+- **GitHub Repository:** jon-egbdigital/EviesMinecraft3dPixelArt
+- **Automatic Deployments:** Enabled for all pushes to main branch
+
+### Preview Deployments
+
+Vercel automatically creates preview deployments for:
+- Pull requests (with unique URLs for testing)
+- Non-main branches (when pushed to GitHub)
+
+These preview deployments are perfect for testing changes before merging to production.
+
 ## Available MCP Servers
 
 This project has access to the following MCP (Model Context Protocol) servers:
 
 ### Chrome DevTools MCP
-**IMPORTANT:** Use the Chrome MCP to test functionality after each deployment or significant change.
+**IMPORTANT:** Use the Chrome MCP to test functionality after each deployment.
 
-After running `npm run dev` or deploying a build:
-1. Navigate to the app in Chrome using the Chrome MCP
+After changes are deployed to Vercel:
+1. Navigate to the production or preview URL in Chrome using the Chrome MCP
 2. Take snapshots to verify UI layout and component rendering
 3. Test interactive features (clicking blocks, selecting colors, painting)
 4. Verify 3D model rendering and OrbitControls functionality
 5. Test complete user flows (select model → paint → complete → rewards)
 6. Check console for errors using `list_console_messages`
 7. Monitor network requests if integrating external resources
+
+For local testing, run `npm run dev` and test at http://localhost:5173
 
 The Chrome MCP provides tools for:
 - Page navigation and interaction (click, fill, hover)
@@ -109,21 +144,21 @@ The Chrome MCP provides tools for:
 ### GitHub MCP
 Use for version control and collaboration:
 - Create commits after completing each phase
-- Push changes to remote repository
-- Create pull requests for major features
+- Push changes to trigger automatic Vercel deployments
+- Create pull requests for major features (creates preview deployments)
 - Manage issues for bug tracking and feature requests
 
 Version control is especially important for a father-daughter project to track progress and celebrate milestones.
 
 ### Vercel MCP
-Use for deployment and hosting:
-- Deploy the application to Vercel for production hosting
-- Manage deployments and preview URLs
+Use for monitoring and managing deployments:
+- View deployment status and build logs
+- Check deployment URLs (production and previews)
+- Monitor deployment errors
 - Configure environment variables
-- Monitor build logs and deployment status
 - Set up custom domains
 
-Vercel provides fast, reliable hosting for React applications with automatic deployments from Git.
+The project is configured for automatic deployments via GitHub - no manual deployment actions needed.
 
 ## Architecture
 
