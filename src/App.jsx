@@ -116,13 +116,13 @@ function App() {
       {/* Shop Button */}
       <button
         onClick={() => setShopOpen(true)}
-        className="absolute top-4 left-4 z-10 bg-green-700 hover:bg-green-600 text-white font-bold px-6 py-3 rounded-lg border-2 border-green-500"
+        className="absolute top-4 left-4 z-10 bg-green-700 hover:bg-green-600 text-white font-bold px-8 py-4 rounded-lg border-2 border-green-500"
       >
         🛒 SHOP
       </button>
 
       {/* Mistakes counter */}
-      <div className="absolute top-20 left-4 z-10 bg-gray-800 bg-opacity-90 px-6 py-3 rounded-lg border-2 border-gray-600">
+      <div className="absolute top-20 left-4 z-10 bg-gray-800 bg-opacity-90 px-8 py-4 rounded-lg border-2 border-gray-600">
         <span className="text-white font-bold">Mistakes: </span>
         <span className={`font-bold ${mistakes === 0 ? 'text-green-400' : 'text-red-400'}`}>
           {mistakes}
