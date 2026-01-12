@@ -6,15 +6,66 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A 3D voxel-based color-by-number game with Minecraft theming. Players paint numbered blocks on 3D models to match colors, earn rewards on completion, and spend currency on brushes and unlocks. This is a father-daughter project where a 10-year-old is the game designer.
 
-**Current Status:** Planning phase - no implementation yet. See PLAN.md for full design specification.
+**Current Status:** Phase 3 complete (Shop system with brushes and utilities). See PLAN.md for full design specification.
 
 ## Tech Stack
 
 - **Framework:** React 18+ with Vite
 - **3D Engine:** Three.js via @react-three/fiber and @react-three/drei
 - **State Management:** Zustand with localStorage persistence
-- **Styling:** Tailwind CSS
+- **Styling:** Tailwind CSS v4
 - **Build Tool:** Vite
+
+## Tailwind CSS v4 Configuration
+
+This project uses Tailwind CSS v4, which requires specific setup different from v3:
+
+**Required Configuration Files:**
+
+1. `tailwind.config.js` - Defines content sources for class scanning:
+```javascript
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+2. `src/index.css` - Must include `@source` directive:
+```css
+@import "tailwindcss";
+
+@source "../src";
+
+/* DO NOT add global resets like * { padding: 0; margin: 0; } */
+/* They will override Tailwind utilities */
+```
+
+3. `postcss.config.js` - PostCSS configuration:
+```javascript
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+    autoprefixer: {},
+  },
+}
+```
+
+**Critical Issue - CSS Resets:**
+
+Global CSS resets like `* { padding: 0; margin: 0; box-sizing: border-box; }` will override Tailwind utility classes, causing padding and margin utilities to not work. Tailwind's base layer provides its own normalization - don't add additional resets.
+
+**Verification:**
+
+To verify Tailwind is working correctly:
+1. Open browser DevTools and inspect an element
+2. Check computed styles - utilities like `px-4` should show actual pixel values (e.g., `padding-left: 16px`)
+3. If computed styles show `padding: 0px` despite having `px-4` class, check for CSS reset conflicts
 
 ## Development Commands
 
